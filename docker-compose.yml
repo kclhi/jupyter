@@ -2,6 +2,15 @@ version: '3.7'
 
 services:
 
+  proxy:
+    build:
+      context: ./proxy
+    depends_on:
+      - hub
+    ports:
+      - '443:443'
+    restart: unless-stopped
+
   hub:
     build: hub
     image: hub
@@ -15,14 +24,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-    ports:
-      - '8000:8000'
     networks:
       default:
       covid-2-internal:
         aliases:
           - jupyter_hub
+    restart: unless-stopped
 
   lab:
     build: lab
