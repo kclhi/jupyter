@@ -1,0 +1,88 @@
+version: '3.7'
+
+services:
+
+  hub:
+    build: hub
+    image: hub
+    container_name: hub
+    environment:
+      DOCKER_JUPYTER_CONTAINER: lab
+      DOCKER_NETWORK_NAME: covid-2-internal
+      HUB_IP: jupyter_hub
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    ports:
+      - '8000:8000'
+    networks:
+      default:
+      covid-2-internal:
+        aliases:
+          - jupyter_hub
+
+  lab:
+    build: lab
+    image: lab
+    container_name: lab-throaway
+    command: echo
+    networks:
+      - covid-2-internal
+
+  mariadb:
+    build: db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+
+  openldap:
+    build:
+      context: ldap
+    image: kclhi/openldap:latest
+    command: --loglevel debug
+    environment:
+      LDAP_TLS_CRT_FILENAME: ${LDAP_TLS_CRT_FILENAME}
+      LDAP_TLS_KEY_FILENAME: ${LDAP_TLS_KEY_FILENAME}
+      LDAP_TLS_CA_CRT_FILENAME: ${LDAP_TLS_CA_CRT_FILENAME}
+      LDAP_ORGANISATION: ${LDAP_ORGANISATION}
+      LDAP_DOMAIN: ${LDAP_DOMAIN}
+      LDAP_BASE_DN: ${LDAP_BASE_DN}
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
+      LDAP_TLS_CIPHER_SUITE: ${LDAP_TLS_CIPHER_SUITE}
+      LDAP_TLS_VERIFY_CLIENT: ${LDAP_TLS_VERIFY_CLIENT}
+    volumes:
+      - ldap_data:/var/lib/ldap
+      - ldap_data:/etc/ldap/slapd.d
+    restart: unless-stopped
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    depends_on:
+      - openldap
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_SERVER_PATH: ${PHPLDAPADMIN_SERVER_PATH}
+      PHPLDAPADMIN_HTTPS: ${PHPLDAPADMIN_HTTPS}
+      PHPLDAPADMIN_LDAP_HOSTS: ${PHPLDAPADMIN_LDAP_HOSTS}
+    restart: unless-stopped
+    ports:
+      - '8082:80'
+
+volumes:
+  hub_data:
+  db_data:
+  ldap_data:
+
+networks:
+  default:
+    name: covid-2
+  covid-2-internal:
+    name: covid-2-internal
+    internal: true
