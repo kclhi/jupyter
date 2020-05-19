@@ -8,7 +8,7 @@ services:
     depends_on:
       - hub
     ports:
-    #  - '80:80'
+      - '80:80'
       - '443:443'
     restart: unless-stopped
 
@@ -29,6 +29,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ADMIN_USERS: ${ADMIN_USERS}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -85,9 +86,9 @@ services:
       PHPLDAPADMIN_SERVER_PATH: ${PHPLDAPADMIN_SERVER_PATH}
       PHPLDAPADMIN_HTTPS: ${PHPLDAPADMIN_HTTPS}
       PHPLDAPADMIN_LDAP_HOSTS: ${PHPLDAPADMIN_LDAP_HOSTS}
-    restart: unless-stopped
     ports:
-      - '8082:80'
+      - '8080:80'
+    restart: unless-stopped
 
 volumes:
   hub_data:
