@@ -5,6 +5,7 @@ services:
   proxy:
     build:
       context: ./proxy
+    container_name: proxy
     depends_on:
       - hub
     ports:
@@ -49,6 +50,7 @@ services:
 
   mariadb:
     build: db
+    container_name: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -62,6 +64,7 @@ services:
       context: ldap
     image: kclhi/openldap:latest
     command: --loglevel debug
+    container_name: openldap
     environment:
       LDAP_TLS_CRT_FILENAME: ${LDAP_TLS_CRT_FILENAME}
       LDAP_TLS_KEY_FILENAME: ${LDAP_TLS_KEY_FILENAME}

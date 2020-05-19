@@ -6,10 +6,10 @@ c.JupyterHub.trusted_alt_names = ["localhost", "kclhi.org"];
 
 ## Authenticator
 c.JupyterHub.authenticator_class = "ldapauthenticator.LDAPAuthenticator";
-c.LDAPAuthenticator.server_address = "covid-2_openldap_1";
+c.LDAPAuthenticator.server_address = "openldap";
 c.LDAPAuthenticator.bind_dn_template = ["uid={username},dc=kclhi,dc=org"];
 c.LDAPAuthenticator.use_ssl = True;
-c.Authenticator.admin_users = {os.environ.get("ADMIN_USERS")}
+c.Authenticator.admin_users = set(os.environ.get("ADMIN_USERS"));
 c.JupyterHub.admin_access = True;
 
 ## Docker spawner
