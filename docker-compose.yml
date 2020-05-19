@@ -8,8 +8,15 @@ services:
     depends_on:
       - hub
     ports:
+    #  - '80:80'
       - '443:443'
     restart: unless-stopped
+
+  # Example Apache proxy to simulate Rosalind gateway setup:
+  # apache:
+    # build: ./apache
+    # ports:
+      # - '8080:443'
 
   hub:
     build: hub
