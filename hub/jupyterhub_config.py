@@ -9,25 +9,26 @@ c.JupyterHub.authenticator_class = "ldapauthenticator.LDAPAuthenticator";
 c.LDAPAuthenticator.server_address = "openldap";
 c.LDAPAuthenticator.bind_dn_template = ["uid={username},dc=kclhi,dc=org"];
 c.LDAPAuthenticator.use_ssl = True;
-c.Authenticator.admin_users = set(os.environ.get("ADMIN_USERS"));
+c.Authenticator.admin_users = {os.environ["ADMIN_USERS"]};
 c.JupyterHub.admin_access = True;
 
 ## Docker spawner
 c.JupyterHub.spawner_class = "dockerspawner.DockerSpawner";
 c.DockerSpawner.image = os.environ["DOCKER_JUPYTER_CONTAINER"];
 c.DockerSpawner.network_name = os.environ["DOCKER_NETWORK_NAME"];
+# c.DockerSpawner.remove_containers = True; ~MDC Causes API error when manually stopping server at present.
 # See https://github.com/jupyterhub/dockerspawner/blob/master/examples/oauth/jupyterhub_config.py
 c.JupyterHub.hub_ip = os.environ["HUB_IP"];
 c.JupyterHub.logo_file = '/srv/jupyterhub/logo.png'
 
 # user data persistence
 # see https://github.com/jupyterhub/dockerspawner#data-persistence-and-dockerspawner
-notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR") or "/home/jovyan";
+notebook_dir = os.getenv("DOCKER_NOTEBOOK_DIR") or "/home/jovyan";
 c.DockerSpawner.notebook_dir = notebook_dir;
-c.DockerSpawner.volumes = { "jupyterhub-user-{username}": notebook_dir };
+c.DockerSpawner.volumes = {os.environ["DATA_LOCATION"]:{"bind":notebook_dir + "/data", "mode":"ro"}, "jupyterhub-user-{username}":notebook_dir};
 
 # db
-c.JupyterHub.db_url = "mysql+mysqlconnector://{}:{}@{}/{}{}".format(os.getenv("MYSQL_USER"), os.getenv("MYSQL_PASSWORD"),"mariadb", os.getenv("MYSQL_DATABASE"), "");
+c.JupyterHub.db_url = "mysql+mysqlconnector://{}:{}@{}/{}{}".format(os.environ["MYSQL_USER"], os.environ["MYSQL_PASSWORD"], "mariadb", os.environ["MYSQL_DATABASE"], "");
 
 # Spawner
 c.Spawner.cpu_limit = 1;
