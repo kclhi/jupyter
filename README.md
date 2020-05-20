@@ -102,7 +102,7 @@ Authentication server for JupyterHub.
 `LDAP_TLS_CIPHER_SUITE=` \
 `LDAP_TLS_VERIFY_CLIENT=`
 
-#### phpLDAPadmin ([phpldapadmin](phpldapadmin/))
+### phpLDAPadmin ([phpldapadmin](phpldapadmin/))
 
 UI for administering ldap (e.g. adding new users).
 
