@@ -3,8 +3,7 @@ version: '3.7'
 services:
 
   proxy:
-    build:
-      context: ./proxy
+    build: proxy
     container_name: proxy
     depends_on:
       - hub
@@ -17,7 +16,7 @@ services:
   # apache:
     # build: ./apache
     # ports:
-      # - '8080:443'
+      # - '8081:443'
 
   hub:
     build: hub
@@ -61,8 +60,7 @@ services:
       - db_data:/var/lib/mysql
 
   openldap:
-    build:
-      context: ldap
+    build: ldap
     image: kclhi/openldap:latest
     command: --loglevel debug
     container_name: openldap
@@ -82,16 +80,19 @@ services:
     restart: unless-stopped
 
   phpldapadmin:
-    image: osixia/phpldapadmin:latest
+    build: phpldapadmin
     depends_on:
       - openldap
     container_name: phpldapadmin
     environment:
       PHPLDAPADMIN_SERVER_PATH: ${PHPLDAPADMIN_SERVER_PATH}
-      PHPLDAPADMIN_HTTPS: ${PHPLDAPADMIN_HTTPS}
       PHPLDAPADMIN_LDAP_HOSTS: ${PHPLDAPADMIN_LDAP_HOSTS}
+      PHPLDAPADMIN_HTTPS: ${PHPLDAPADMIN_HTTPS}
+      PHPLDAPADMIN_HTTPS_CRT_FILENAME: ${PHPLDAPADMIN_HTTPS_CRT_FILENAME}
+      PHPLDAPADMIN_HTTPS_KEY_FILENAME: ${PHPLDAPADMIN_HTTPS_KEY_FILENAME}
+      PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME: ${PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME}
     ports:
-      - '8080:80'
+      - '8080:443'
     restart: unless-stopped
 
 volumes:
