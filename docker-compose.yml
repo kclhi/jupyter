@@ -12,12 +12,6 @@ services:
       - '443:443'
     restart: unless-stopped
 
-  # Example Apache proxy to simulate Rosalind gateway setup:
-  # apache:
-    # build: ./apache
-    # ports:
-      # - '8081:443'
-
   hub:
     build: hub
     image: hub
