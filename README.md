@@ -18,7 +18,7 @@ Create a Docker host ('machine'), e.g. on Openstack:
 `--openstack-tenant-id [...] \` Tenant (project) ID (where to launch the instance), located in `dashboard/identity/`. \
 `--openstack-net-name [...] \` Network in which to create instance, a list of which are located in `dashboard/project/networks/`. \
 `--openstack-floatingip-pool public \` \
-`--openstack-sec-groups [...] \` Security groups allowing ssh, docker, http/https and port 8080 access. \
+`--openstack-sec-groups [...] \` Security groups allowing `ssh (22)`, `docker (2376)`, `http/https (80/443)` and port `8080` access. \
 `--openstack-username [...] \` \
 `--openstack-password [...] \` \
 `--openstack-ssh-user [...] \` SSH user to login as, depending on instance base image (e.g. CentOS).
