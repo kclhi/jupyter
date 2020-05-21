@@ -6,7 +6,7 @@
 
 Before starting, [download and install docker (machine)](https://docs.docker.com/machine/install-machine/).
 
-## Host setup
+### Host setup
 
 Create a Docker host ('machine'), e.g. on Openstack:
 
@@ -27,21 +27,6 @@ Create a Docker host ('machine'), e.g. on Openstack:
 If not supplying existing keys when creating the machine, ensure generated keys in `.docker/machine/machines/[machine-name]` are secured with passphrases, e.g. `ssh-keygen -p -f key.pem` and `ssh-keygen -p -m PEM -f key.pem` for SSH and TLS keys respectively.
 
 Or, connect to an existing machine using software such as [machine-share](https://github.com/bhurlow/machine-share).
-
-
-## Download
-
-(Recommended) [Create an SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and clone this repository.
-
-```
-git clone git@github.kcl.ac.uk:hi/jupyter-docker.git
-```
-
-(Alternative) Clone this repository using HTTPs, suppling username and password:
-
-```
-git clone https://github.kcl.ac.uk/hi/jupyter-docker.git
-```
 
 ## Configuration
 
