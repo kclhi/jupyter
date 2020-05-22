@@ -24,7 +24,7 @@ Create a Docker host ('machine'), e.g. on Openstack:
 `--openstack-ssh-user [...] \` SSH user to login as, depending on instance base image (e.g. CentOS).
 `[machine-name]`
 
-If not supplying existing keys when creating the machine, ensure generated keys in `.docker/machine/machines/[machine-name]` are secured with passphrases, e.g. `ssh-keygen -p -f key.pem` and `ssh-keygen -p -m PEM -f key.pem` for SSH and TLS keys respectively.
+If not supplying existing keys when creating the machine, ensure generated keys in `.docker/machine/machines/[machine-name]` are secured with passphrases, e.g. `ssh-keygen -p -f id_rsa` and `ssh-keygen -p -m PEM -f key.pem` for SSH and TLS keys respectively.
 
 Or, connect to an existing machine using software such as [machine-share](https://github.com/bhurlow/machine-share).
 
@@ -49,7 +49,7 @@ JupyterLab image, tailored for R and Python, plus additional packages as require
 
 (Encrypted) MariaDB backend for JupyterHub.
 
-1. [Setup db encryption keys](https://mariadb.com/kb/en/file-key-management-encryption-plugin/) in [db/encrypt](db/encrypt).
+1. [Setup db encryption keys](https://mariadb.com/kb/en/file-key-management-encryption-plugin/) in [db/encrypt/keys](db/encrypt).
 
 2. Supply the following environment variables:
 
@@ -72,7 +72,7 @@ NGINX proxy to sit in front of JupyterHub (and other services).
 
 Authentication server for JupyterHub.
 
-1. Copy [proxy/certs](proxy/certs) to [ldap/certs](ldap/certs).
+1. Copy [proxy/certs](proxy/certs) to [ldap/certs](ldap/).
 
 2. Supply the following environment variables:
 
@@ -91,7 +91,7 @@ Authentication server for JupyterHub.
 
 UI for administering ldap (e.g. adding new users).
 
-1. Copy [proxy/certs](proxy/certs) to [phpldapadmin/certs](phpldapadmin/certs).
+1. Copy [proxy/certs](proxy/certs) to [phpldapadmin/certs](phpldapadmin/).
 
 2. Supply the following environment variables:
 
