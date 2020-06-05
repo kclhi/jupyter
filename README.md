@@ -1,6 +1,8 @@
-<img src="hub/logo.png" width="350">
+<img src="hub/logo.png" width="350" alt="King's College London Health Informatics (kclhi) JupyterHub">
 
 # Docker configuration :whale2:
+
+[Tailored for COVID-19 dataset analysis](lab/Dockerfile).
 
 ## Prerequisites
 
