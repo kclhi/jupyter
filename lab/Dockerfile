@@ -12,6 +12,7 @@ RUN conda install --quiet --yes \
     'tableone=0.7.*' \
     'graphviz=2.42.*' \
     'scipy=1.4.*' \
+    'xgboost=1.0.*' \
     # Repeat above lines for additional Python packages.
     # Unavailable:
     # 'pyplot=1.5.*' \
@@ -40,7 +41,12 @@ RUN conda install --quiet --yes \
     'r-ggpubr=0.3.*' \
     'r-rms=6.0*' \
     'r-hmisc=4.4*' \
-    # Repeat above lines for additional R packages.
+    'r-glmnet=2.0*' \
+    'r-cmprsk=2.2*' \
+    'r-pec=2019.11.03' \
+    'r-survivalroc=1.0.*' \
+    'r-randomforestsrc=2.9.*' \
+    # Repeat above lines for additional R packages (conda install).
     # Listed, but unavailable:
     # 'r-matchit=3.0.2' \
     # 'r-optmatch=0.9_10' \
@@ -52,7 +58,7 @@ RUN conda install --quiet --yes \
 ENV CRAN https://cloud.r-project.org/
 ENV R_QUIET TRUE
 RUN R --quiet -e "install.packages(c('tableone', 'twang', 'rgenoud', 'optmatch'), repos='$CRAN', quiet=$R_QUIET)"
-# Repeat above lines for additonal R packages.
+# Repeat above lines for additonal R packages (native install).
 # Not available for current image R version (3.6.3):
 # RUN R --quiet -e "install.packages(c('hrm', 'matchit'), repos='$CRAN', quiet=$R_QUIET)"
 # Java is a dependency, skip for now:

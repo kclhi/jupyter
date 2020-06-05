@@ -2,7 +2,7 @@
 
 # Docker configuration :whale2:
 
-[Tailored for COVID-19 dataset analysis](lab/Dockerfile).
+Tailored for COVID-19 dataset analysis ([view packages](lab/Dockerfile)).
 
 ## Prerequisites
 
