@@ -13,9 +13,10 @@ with open('imports.csv', 'w', newline='') as csvfile:
 		patch_set = PatchSet(uni_diff_text);
 		for patched_file in patch_set:
 			for patched_line in patched_file.__str__().split("\n"):
-				match = re.search("(from\s+(\S+)\s+)?import(\s+([^\s#\\\,]+))+(?:\s+as\s+\S+)?", patched_line);
+				python_match = re.search("(from\s+(\S+)\s+)?import(\s+([^\s#\\\,]+))+(?:\s+as\s+\S+)?", patched_line);
+				r_match = re.search("library\(('|\\\"\"|\\\\\")?([^\s,'\"\\\]+)", patched_line); 
 				if("+" in patched_line.lower()):
-					if (match):
-						writer.writerow({'filename': patched_file.path.split("/")[len(patched_file.path.split("/"))-1], 'author':patched_file.path.split("/")[0], 'import':match[0], 'time':datetime.fromtimestamp(repository.commit('HEAD~' + str(commit-1)).committed_date), 'sha':repository.commit('HEAD~' + str(commit-1)).hexsha});
-					elif (not match and "import " in patched_line.lower()):
+					if (python_match or r_match):
+						writer.writerow({'filename': patched_file.path.split("/")[len(patched_file.path.split("/"))-1], 'author':patched_file.path.split("/")[0], 'import':(python_match[0] if python_match else r_match[2]), 'time':datetime.fromtimestamp(repository.commit('HEAD~' + str(commit-1)).committed_date), 'sha':repository.commit('HEAD~' + str(commit-1)).hexsha});
+					elif ((not python_match and "import " in patched_line.lower()) or (not r_match and "library(" in patched_line.lower())):
 						print("----> Check no match: " + patched_line.lower());
