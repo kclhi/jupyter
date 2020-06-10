@@ -1,0 +1,27 @@
+document
+
+    default <http://pgt.inf.kcl.ac.uk/>
+    prefix pgt <http://pgt.inf.kcl.ac.uk/pgt/>
+    prefix var <http://pgt.inf.kcl.ac.uk/var/>
+    prefix vvar <http://pgt.inf.kcl.ac.uk/vvar/>
+    prefix zone <http://pgt.inf.kcl.ac.uk/zone/>
+
+    prefix pandas <http://covid.kcl.ac.uk/pandas/>
+
+    entity(var:notebookBefore, [prov:type="pandas#Notebook"])
+    entity(var:notebookAfter, [prov:type="pandas#Notebook",
+            pandas:filename='vvar:filename', pandas:commit='vvar:commit'])
+    entity(var:library, [prov:type="pandas#Library",
+            pandas:libraryName='vvar:libraryName',
+            pandas:language='vvar:language',
+            zone:id='import', zone:type="parallel"])
+    activity(var:imported, [prov:type="pandas#Imported", prov:end='vvar:time',
+            zone:id='import', zone:type="parallel"])
+    agent(var:author, [prov:type="pandas#Author"])
+
+    used(var:imported, var:notebookBefore, -)
+    used(var:imported, var:library, -)
+    wasGeneratedBy(var:notebookAfter, var:imported, -)
+    wasAssociatedWith(var:imported, var:author, -)
+
+endDocument
