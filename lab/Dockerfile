@@ -77,4 +77,5 @@ RUN jupyter labextension install /etc/jupyter/plugin --no-build && \
     rm -rf $HOME/.node-gyp && \
     rm -rf $HOME/.local && \
     fix-permissions $CONDA_DIR $HOME
+COPY kclhi.crt /kclhi.crt
 USER $NB_UID

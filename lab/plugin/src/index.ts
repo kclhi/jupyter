@@ -13,9 +13,9 @@ const extension: JupyterFrontEndPlugin<void> = {
   autoStart: true,
   activate: () => {
     NotebookActions.executed.connect(async(sender, args) => {
-      const { notebook, cell } = args;
+      const {notebook, cell} = args;
       console.log("Sending run.");
-      await ky.get("http://localhost/pandas");
+      await ky.post("https://localhost/panda/add", {json:{notebook:notebook.model.toJSON(), cell:cell.model.toJSON()}});
     });
   }
 };

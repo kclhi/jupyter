@@ -25,6 +25,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       ADMIN_USERS: ${ADMIN_USERS}
       DATA_LOCATION: ${DATA_LOCATION}
+      REQUESTS_CA_BUNDLE: ${REQUESTS_CA_BUNDLE}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -42,13 +43,20 @@ services:
     networks:
       - covid-2-internal
 
-  temp:
-    image: strm/helloworld-http
+  provenance:
+    build: provenance
+    image: provenance
+    container_name: provenance
+    environment:
+      PORT: 443
+      GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
+    ports:
+      - '7777:443'
     networks:
       default:
       covid-2-internal:
         aliases:
-          - temp
+          - provenance
 
   mariadb:
     build: db

@@ -26,6 +26,7 @@ c.JupyterHub.logo_file = '/srv/jupyterhub/logo.png'
 notebook_dir = os.getenv("DOCKER_NOTEBOOK_DIR") or "/home/jovyan";
 c.DockerSpawner.notebook_dir = notebook_dir;
 c.DockerSpawner.volumes = {os.environ["DATA_LOCATION"]:{"bind":notebook_dir + "/data", "mode":"ro"}, "jupyterhub-user-{username}":notebook_dir};
+c.DockerSpawner.environment = {"REQUESTS_CA_BUNDLE":os.getenv("REQUESTS_CA_BUNDLE")};
 
 # db
 c.JupyterHub.db_url = "mysql+mysqlconnector://{}:{}@{}/{}{}".format(os.environ["MYSQL_USER"], os.environ["MYSQL_PASSWORD"], "mariadb", os.environ["MYSQL_DATABASE"], "");
