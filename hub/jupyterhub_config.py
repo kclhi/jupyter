@@ -17,12 +17,10 @@ c.JupyterHub.spawner_class = "dockerspawner.DockerSpawner";
 c.DockerSpawner.image = os.environ["DOCKER_JUPYTER_CONTAINER"];
 c.DockerSpawner.network_name = os.environ["DOCKER_NETWORK_NAME"];
 # c.DockerSpawner.remove_containers = True; ~MDC Causes API error when manually stopping server at present.
-# See https://github.com/jupyterhub/dockerspawner/blob/master/examples/oauth/jupyterhub_config.py
 c.JupyterHub.hub_ip = os.environ["HUB_IP"];
 c.JupyterHub.logo_file = '/srv/jupyterhub/logo.png'
 
 # user data persistence
-# see https://github.com/jupyterhub/dockerspawner#data-persistence-and-dockerspawner
 notebook_dir = os.getenv("DOCKER_NOTEBOOK_DIR") or "/home/jovyan";
 c.DockerSpawner.notebook_dir = notebook_dir;
 c.DockerSpawner.volumes = {os.environ["DATA_LOCATION"]:{"bind":notebook_dir + "/data", "mode":"ro"}, "jupyterhub-user-{username}":notebook_dir};

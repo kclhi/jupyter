@@ -43,21 +43,6 @@ services:
     networks:
       - covid-2-internal
 
-  provenance:
-    build: provenance
-    image: provenance
-    container_name: provenance
-    environment:
-      PORT: 443
-      GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
-    ports:
-      - '7777:443'
-    networks:
-      default:
-      covid-2-internal:
-        aliases:
-          - provenance
-
   mariadb:
     build: db
     container_name: mariadb
@@ -105,14 +90,62 @@ services:
       - '8080:443'
     restart: unless-stopped
 
+  # provenance:
+
+  provenance:
+    build: provenance
+    image: provenance
+    container_name: provenance
+    environment:
+      PORT: 443
+      GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
+    ports:
+      - '7777:443'
+    networks:
+      default:
+      covid-2-internal:
+        aliases:
+          - provenance
+    restart: unless-stopped
+
+  rabbit:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - provenance_data:/var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    restart: unless-stopped
+
+  template-server:
+    image: kclhi/template-server:latest
+    depends_on:
+      - neo4j
+    restart: unless-stopped
+
+  neo4j:
+    image: neo4j:3.4
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH}
+    ports:
+      - 7474:7474
+    volumes:
+      - provenance_data:/data
+    restart: unless-stopped
+
 volumes:
   hub_data:
   db_data:
   ldap_data:
+  provenance_data:
 
 networks:
   default:
     name: covid-2
   covid-2-internal:
     name: covid-2-internal
-    #internal: true
+    internal: true

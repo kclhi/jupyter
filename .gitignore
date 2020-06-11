@@ -270,6 +270,8 @@ pip-selfcheck.json
 *.tsbuildinfo
 node_modules
 
+provenance/templates/*.json
+
 *.enc
 *.csr
 *.srl
