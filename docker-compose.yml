@@ -42,6 +42,14 @@ services:
     networks:
       - covid-2-internal
 
+  temp:
+    image: strm/helloworld-http
+    networks:
+      default:
+      covid-2-internal:
+        aliases:
+          - temp
+
   mariadb:
     build: db
     container_name: mariadb
@@ -99,4 +107,4 @@ networks:
     name: covid-2
   covid-2-internal:
     name: covid-2-internal
-    internal: true
+    #internal: true

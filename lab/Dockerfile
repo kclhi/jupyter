@@ -1,7 +1,5 @@
 FROM jupyter/datascience-notebook:76402a27fd13
 MAINTAINER kclhi
-USER root
-RUN echo 'echo "kclhi JupyterHub (kclhi.org). Please contact for services (e.g. package installation)."' >> ~/.bashrc
 USER $NB_UID
 # Additional Python packages (covid analysis).
 RUN conda install --quiet --yes \
@@ -63,3 +61,20 @@ RUN R --quiet -e "install.packages(c('tableone', 'twang', 'rgenoud', 'optmatch')
 # RUN R --quiet -e "install.packages(c('hrm', 'matchit'), repos='$CRAN', quiet=$R_QUIET)"
 # Java is a dependency, skip for now:
 # RUN R --quiet -e "install.packages(c('xlsx'), repos='$CRAN', quiet=$R_QUIET)"
+# Provenance data grabs
+COPY jupyter_notebook_config_hook.py /etc/jupyter/
+RUN cat /etc/jupyter/jupyter_notebook_config_hook.py >> /etc/jupyter/jupyter_notebook_config.py
+# Standalone notebook cell run data grab: COPY custom.js /opt/conda/lib/python3.7/site-packages/notebook/static/custom/
+USER root
+RUN echo 'echo "kclhi JupyterHub (kclhi.org). Please contact for services (e.g. package installation)."' >> ~/.bashrc
+COPY plugin /etc/jupyter/plugin
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+RUN jupyter labextension install /etc/jupyter/plugin --no-build && \
+    jupyter lab build && \
+    jupyter lab clean && \
+    jlpm cache clean && \
+    npm cache clean --force && \
+    rm -rf $HOME/.node-gyp && \
+    rm -rf $HOME/.local && \
+    fix-permissions $CONDA_DIR $HOME
+USER $NB_UID

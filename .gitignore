@@ -15,7 +15,6 @@
 *.sig
 
 pkg/
-src/
 
 ### certificates ###
 *.pem
@@ -265,6 +264,11 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,virtualenv,certificates,jupyternotebooks,data,images,dropbox,archlinuxpackages
+
+### ts ###
+*.bundle.*
+*.tsbuildinfo
+node_modules
 
 *.enc
 *.csr

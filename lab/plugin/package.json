@@ -1,0 +1,29 @@
+{
+  "name": "panda",
+  "version": "0.1.0",
+  "description": "panda.",
+  "author": "martinchapman",
+  "files": [
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf lib tsconfig.tsbuildinfo",
+    "prepare": "npm run clean && npm run build",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "@jupyterlab/application": "^2.1.2",
+    "@jupyterlab/notebook": "^2.1.2",
+    "ky": "^0.20.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.5"
+  },
+  "jupyterlab": {
+    "extension": true
+  }
+}
