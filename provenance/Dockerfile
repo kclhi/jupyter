@@ -7,3 +7,9 @@ WORKDIR /
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
+WORKDIR /app/api/repo
+RUN git init
+RUN git config --global user.email "martin@kclhi.org"
+RUN git config --global user.name "Martin Chapman"
+WORKDIR /app
+ENV PY_ENV=production

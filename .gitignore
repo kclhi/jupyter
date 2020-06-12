@@ -271,6 +271,7 @@ pip-selfcheck.json
 node_modules
 
 provenance/templates/*.json
+provenance/api/repo
 
 *.enc
 *.csr

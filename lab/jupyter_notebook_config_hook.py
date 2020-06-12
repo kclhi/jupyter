@@ -16,7 +16,6 @@ def script_post_save(model, os_path, contents_manager, **kwargs):
     log = contents_manager.log
     script, resources = _script_exporter.from_filename(os_path)
     log.info("Sending code.");
-    log.info(json.dumps(model, default=convert));
-    requests.post('https://provenance/add', json={"user":os.environ["JUPYTERHUB_USER"], "code":script, "notebook":json.dumps(model, default=convert)});
+    requests.post('https://provenance/add', json={"user":os.environ["JUPYTERHUB_USER"], "code":script, "notebook":json.loads(json.dumps(model, default=convert))});
 
 c.FileContentsManager.post_save_hook = script_post_save

@@ -99,8 +99,7 @@ services:
     environment:
       PORT: 443
       GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
-    ports:
-      - '7777:443'
+      RABBIT_HOST: "rabbit"
     networks:
       default:
       covid-2-internal:
@@ -126,13 +125,16 @@ services:
     depends_on:
       - neo4j
     restart: unless-stopped
+    ports:
+      - '8081:8080'
 
   neo4j:
     image: neo4j:3.4
     environment:
       NEO4J_AUTH: ${NEO4J_AUTH}
     ports:
-      - 7474:7474
+      - '7687:7687'
+      - '7474:7474'
     volumes:
       - provenance_data:/data
     restart: unless-stopped

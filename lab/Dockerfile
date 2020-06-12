@@ -61,12 +61,9 @@ RUN R --quiet -e "install.packages(c('tableone', 'twang', 'rgenoud', 'optmatch')
 # RUN R --quiet -e "install.packages(c('hrm', 'matchit'), repos='$CRAN', quiet=$R_QUIET)"
 # Java is a dependency, skip for now:
 # RUN R --quiet -e "install.packages(c('xlsx'), repos='$CRAN', quiet=$R_QUIET)"
-# Provenance data grabs
-COPY jupyter_notebook_config_hook.py /etc/jupyter/
-RUN cat /etc/jupyter/jupyter_notebook_config_hook.py >> /etc/jupyter/jupyter_notebook_config.py
-# Standalone notebook cell run data grab: COPY custom.js /opt/conda/lib/python3.7/site-packages/notebook/static/custom/
 USER root
 RUN echo 'echo "kclhi JupyterHub (kclhi.org). Please contact for services (e.g. package installation)."' >> ~/.bashrc
+# Provenance data grabs
 COPY plugin /etc/jupyter/plugin
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN jupyter labextension install /etc/jupyter/plugin --no-build && \
@@ -79,3 +76,6 @@ RUN jupyter labextension install /etc/jupyter/plugin --no-build && \
     fix-permissions $CONDA_DIR $HOME
 COPY kclhi.crt /kclhi.crt
 USER $NB_UID
+COPY jupyter_notebook_config_hook.py /etc/jupyter/
+RUN cat /etc/jupyter/jupyter_notebook_config_hook.py >> /etc/jupyter/jupyter_notebook_config.py
+# Standalone notebook cell run data grab: COPY custom.js /opt/conda/lib/python3.7/site-packages/notebook/static/custom/
