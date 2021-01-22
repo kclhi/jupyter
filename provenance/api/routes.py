@@ -7,22 +7,22 @@ from api import provify;
 app = Starlette(debug=True)
 
 def commit(repo, branch='master', message='Auto commit'):
-        has_changed = False;
+    has_changed = False;
 
-        for file in repo.untracked_files:
-            repo.git.add(file);
-            if has_changed is False:
-                has_changed = True;
+    for file in repo.untracked_files:
+        repo.git.add(file);
+        if has_changed is False:
+            has_changed = True;
 
-        if repo.is_dirty() is True:
-            for file in repo.git.diff(None, name_only=True).split('\n'):
-                if file:
-                    repo.git.add(file);
-                    if has_changed is False:
-                        has_changed = True;
+    if repo.is_dirty() is True:
+        for file in repo.git.diff(None, name_only=True).split('\n'):
+            if file:
+                repo.git.add(file);
+                if has_changed is False:
+                    has_changed = True;
 
-        if has_changed is True:
-            repo.git.commit('-m', message);
+    if has_changed is True:
+        repo.git.commit('-m', message);
 
 
 @app.route('/add', methods=["POST"])
