@@ -1,21 +1,9 @@
-#!/usr/bin/env python3
-
-import csv, configparser, os
+import csv, configparser, os, uuid
 from datetime import datetime
 from collections import defaultdict
-import pgt
+import pgt 
 
-def provify_imports(path='../data/covid-1.csv', template='../templates/imported.json'):
-
-    # gather by commit
-    timeline = defaultdict(list)
-
-    with open(path) as fh:
-        reader = csv.DictReader(fh)
-        for row in reader:
-            k = (row['sha'], row['time'], row['author'])
-            v = (row['filename'], row['import'], row['language'])
-            timeline[k].append(v)
+def provify_imports(imports, template):
 
     config = configparser.ConfigParser();
 
@@ -35,83 +23,48 @@ def provify_imports(path='../data/covid-1.csv', template='../templates/imported.
     client.namespace('covid', 'pandas', 'http://covid.kcl.ac.uk/pandas')
     client.register_template('covid', 'imported')
 
-    current_imports = defaultdict(list)
-    identifier = {}
-    imported_count = defaultdict(int)
+    # instantiate first new import
+    filename, author, language, library, time, sha, previous_sha = imports[0].values()
 
-    # sort chronologically
-    for commit in sorted(timeline, key=lambda abc: abc[1]):
-        # gather by file
-        latest_imports = defaultdict(list)
-        for filename, library, language in timeline[commit]:
-            latest_imports[filename].append((library, language))
+    s = pgt.Substitution()
 
-        for filename, imports in latest_imports.items():
-            # filter existing imports
-            new_imports = []
-            for i in imports:
-                if i not in current_imports[filename]:
-                    new_imports.append(i)
+    nb_id1 = filename + "_" + previous_sha
 
-            if len(new_imports) == 0:
-                continue
+    s.add_ivar('notebookBefore', pgt.QualifiedName('', nb_id1))
 
-            for i in new_imports:
-                print(commit, filename, i)
+    nb_id2 = filename + '_' + sha
+    s.add_ivar('notebookAfter', pgt.QualifiedName('', nb_id2))
+    s.add_vvar('filename', filename)
+    s.add_vvar('commit', sha)
 
-            # instantiate first new import
-            s = pgt.Substitution()
+    a_id = filename + '_' + str(uuid.uuid1())
+    s.add_ivar('imported', pgt.QualifiedName('', a_id))
+    s.add_vvar('time', datetime.fromisoformat(time))
 
-            if filename in identifier:
-                nb_id1 = identifier[filename]
-            else:
-                nb_id1 = filename + '_0000'
-            s.add_ivar('notebookBefore', pgt.QualifiedName('', nb_id1))
+    s.add_ivar('author', pgt.QualifiedName('', author))
 
-            nb_id2 = filename + '_' + commit[0]
-            s.add_ivar('notebookAfter', pgt.QualifiedName('', nb_id2))
-            s.add_vvar('filename', filename)
-            s.add_vvar('commit', commit[0])
+    s.add_ivar('library', pgt.QualifiedName('', library))
+    s.add_vvar('libraryName', library)
+    s.add_vvar('language', language)
 
-            a_id = filename + '_' + str(imported_count[filename])
-            s.add_ivar('imported', pgt.QualifiedName('', a_id))
-            s.add_vvar('time', datetime.fromisoformat(commit[1]))
+    f_id = filename + '_' + sha
+    client.geninit('covid', 'imported', f_id, s.to_json())
 
-            s.add_ivar('author', pgt.QualifiedName('', commit[2]))
+    # instantiate remaining new imports
+    for imported in imports[1:]:
 
-            init_import = new_imports[0]
+        filename, author, language, library, time, sha, previous_sha = imported.values()
+        
+        z = pgt.Substitution()
 
-            s.add_ivar('library', pgt.QualifiedName('', init_import[0]))
-            s.add_vvar('libraryName', init_import[0])
-            s.add_vvar('language', init_import[1])
+        a_id = filename + '_' + str(uuid.uuid1())
+        z.add_ivar('imported', pgt.QualifiedName('', a_id))
+        z.add_vvar('time', datetime.fromisoformat(time))
 
-            f_id = filename + '_' + commit[0]
-            client.geninit('covid', 'imported', f_id, s.to_json())
+        z.add_ivar('library', pgt.QualifiedName('', library))
+        z.add_vvar('libraryName', library)
+        z.add_vvar('language', language)
 
-            imported_count[filename] += 1
+        client.genzone('covid', 'imported', f_id, 'import', z.to_json())
 
-            # instantiate remaining new imports
-            for i in new_imports[1:]:
-                z = pgt.Substitution()
-
-                a_id = filename + '_' + str(imported_count[filename])
-                z.add_ivar('imported', pgt.QualifiedName('', a_id))
-                z.add_vvar('time', datetime.fromisoformat(commit[1]))
-
-                z.add_ivar('library', pgt.QualifiedName('', i[0]))
-                z.add_vvar('libraryName', i[0])
-                z.add_vvar('language', i[1])
-
-                client.genzone('covid', 'imported', f_id, 'import', z.to_json())
-
-                print(z.to_json());
-                imported_count[filename] += 1
-
-            client.genfinal('covid', 'imported', f_id)
-
-            break;
-            identifier[filename] = nb_id2
-            current_imports[filename].extend(new_imports)
-
-if __name__ == '__main__':
-    provify_imports();
+    client.genfinal('covid', 'imported', f_id)

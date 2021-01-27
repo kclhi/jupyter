@@ -105,6 +105,8 @@ services:
       covid-2-internal:
         aliases:
           - provenance
+    volumes:
+      - provenance_repo_data:/app/api/repo
     restart: unless-stopped
 
   rabbit:
@@ -114,7 +116,7 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     volumes:
-      - provenance_data:/var/lib/rabbitmq
+      - provenance_rabbit_data:/var/lib/rabbitmq
     ports:
       - '5672:5672'
       - '15672:15672'
@@ -136,14 +138,16 @@ services:
       - '7687:7687'
       - '7474:7474'
     volumes:
-      - provenance_data:/data
+      - provenance_neo4j_data:/data
     restart: unless-stopped
 
 volumes:
   hub_data:
   db_data:
   ldap_data:
-  provenance_data:
+  provenance_neo4j_data:
+  provenance_rabbit_data:
+  provenance_repo_data:
 
 networks:
   default:

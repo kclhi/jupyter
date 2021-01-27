@@ -38,7 +38,7 @@ JupyterHub image, configured for an (encrypted) MySQL (MariaDB) backend, LDAP au
 
 Supply the following environment variables (via a `.env` file in the repository root):
 
-`ADMIN_USERS=` List of admin users \
+`ADMIN_USERS=` List of admin users.
 `DATA_LOCATION=` The location of a shared (data) directory on the (remote) host, to be mounted in the home directory of each JupyterHub user.
 
 ### JupyterLab ([lab](lab/))

@@ -3,6 +3,7 @@ from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from api import imports;
 from api import provify;
+from unidiff import PatchSet
 
 app = Starlette(debug=True)
 
@@ -23,6 +24,8 @@ def commit(repo, branch='master', message='Auto commit'):
 
     if has_changed is True:
         repo.git.commit('-m', message);
+    
+    return has_changed;
 
 
 @app.route('/add', methods=["POST"])
@@ -39,15 +42,15 @@ async def add(request):
         if(notebook["notebook"] and "name" in notebook["notebook"]): # is save
             repo = "./api/repo";
             repository = git.Repo(repo);
-            folder = './api/repo/' + notebook["user"];
+            folder = repo + "/" + notebook["user"];
             if not os.path.exists(folder):
                 os.makedirs(folder)
             f = open(folder + "/" + notebook["notebook"]["name"], "w");
             f.write(notebook["code"]);
-            f.close()
-            commit(repository);
-            csv = "./api/imports.csv";
-            imports.get_imports(repo, csv);
-            provify.provify_imports(csv, "templates/imported.json");
-
+            f.close();
+            if(commit(repository)):
+                imported = imports.get_imports(repo);
+                if(len(imported)):
+                    provify.provify_imports(imported, "templates/imported.json");
+                    
     return JSONResponse({});
