@@ -276,3 +276,4 @@ provenance/api/repo
 *.enc
 *.csr
 *.srl
+*.sqlite
