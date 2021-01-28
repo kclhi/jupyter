@@ -10,7 +10,7 @@ def provify_imports(imports, template):
     if 'PY_ENV' in os.environ and os.environ['PY_ENV']=="production":
         config.read('config/config.prod.ini');
     else:
-        config.read('../config/config.dev.ini');
+        config.read('config/config.dev.ini');
 
     client = pgt.RabbitClient(config.get('RABBIT', 'HOST', vars=os.environ), 5672, 'flopsy', 'password', 'pgt')
 
@@ -24,7 +24,7 @@ def provify_imports(imports, template):
     client.register_template('covid', 'imported')
 
     # instantiate first new import
-    filename, author, language, library, time, sha, previous_sha = imports[0].values()
+    language, library, filename, author, time, sha, previous_sha = imports[0].values()
 
     s = pgt.Substitution()
 
@@ -53,7 +53,7 @@ def provify_imports(imports, template):
     # instantiate remaining new imports
     for imported in imports[1:]:
 
-        filename, author, language, library, time, sha, previous_sha = imported.values()
+        language, library, filename, author, time, sha, previous_sha = imported.values()
         
         z = pgt.Substitution()
 
