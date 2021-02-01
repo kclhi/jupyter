@@ -1,4 +1,4 @@
-import git, os, json
+import git, os, json, uuid
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from unidiff import PatchSet
@@ -56,12 +56,27 @@ async def add(request):
         db.bind(provider='sqlite', filename='mappings.sqlite');
         db.generate_mapping();
         with orm.db_session:
-            variable_substitutions = variables.get_variable_substitutions(repo, db.Expression.select());
-
-        print(variable_substitutions);
-        
-        if len(variable_substitutions):
+            variable_values = variables.extract_variable_values(repo, db.Expression.select());
+       
+        if len(variable_values):
             if commit(repository, user + "/" + filename):
-                provify.create_substitution({**variable_substitutions, **{"filename": filename, "author":user, "time":str(datetime.fromtimestamp(repository.commit("HEAD").committed_date)), "sha":repository.commit("HEAD").hexsha, "previous_sha":(repository.commit("HEAD~1").hexsha if len(list(repository.iter_commits("HEAD"))) > 1 else "0000")}});
+
+                previous_sha = repository.commit("HEAD~1").hexsha if len(list(repository.iter_commits("HEAD"))) > 1 else "0000";
+                sha = repository.commit("HEAD").hexsha;
+
+                print(repository.commit("HEAD").committed_date);
+                
+                # Fixed values to be applied to each substitution for a given template.
+                fixed_values = {"import": [
+                    {"name": "notebookBefore", "value": filename + "_" + previous_sha, "ivar": True, "zone": False},
+                    {"name": "notebookAfter", "value": filename + '_' + sha, "ivar": True, "zone": False},
+                    {"name": "filename", "value": filename, "ivar": False, "zone": False},
+                    {"name": "commit", "value": sha, "ivar": False, "zone": False}, 
+                    {"name": "author", "value": user, "ivar": True, "zone": False},
+                    {"name": "imported", "value": filename + '_' + str(uuid.uuid1()), "ivar": True, "zone": True},
+                    {"name": "time", "value": str(datetime.fromisoformat(str(datetime.fromtimestamp(repository.commit("HEAD").committed_date)))), "ivar": False, "zone": True},
+                ]};
+
+                provify.create_substitutions("covid", "pandas", fixed_values, variable_values);
                     
     return JSONResponse({});

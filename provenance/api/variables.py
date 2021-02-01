@@ -8,7 +8,7 @@ def net_insertion(insert, lines):
 
     return 1;
     
-def get_variable_substitutions(repo, expressions):
+def extract_variable_values(repo, expressions):
 
     repository = git.Repo(repo);
     
@@ -34,6 +34,7 @@ def get_variable_substitutions(repo, expressions):
 
                     if match:
                         
+                        # Do different things to derive a value for a matched variable.
                         if expression.match_action.action=="text":
                             value=expression.match_action.value;
                         elif expression.match_action.action=="extract":
@@ -45,14 +46,14 @@ def get_variable_substitutions(repo, expressions):
                             substitution_variable["value"]=value;
                             substitution_variable["ivar"]=variable.ivar;
                             template_name = variable.template.name;
-                            # A list of substitutions is maintained for each template
+                            # A list of substitutions is maintained for each template. If len > 1 zones assumed.
                             last_substitution = template_substitutions.get(template_name,[[]])[-1];
                             # If the last substitution already contains the current mapped variable, 
-                            # start a new substitution
+                            # start a new substitution (zone).
                             if variable.name in [variable_name["name"] for variable_name in last_substitution]:
                                 last_substitution=[];
                             last_substitution.append(substitution_variable);
-                            # Associate new substitutions with template
+                            # Associate new substitution (zone) with template.
                             if len(last_substitution)==1:
                                 template_substitutions.setdefault(variable.template.name,[]).append(last_substitution);
 

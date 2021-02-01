@@ -2,7 +2,7 @@ import configparser, os, uuid
 from datetime import datetime
 import pgt 
 
-def create_substitution(variable_substitutions):
+def create_substitutions(name, domain, fixed_values, variable_values):
 
     config = configparser.ConfigParser();
 
@@ -13,57 +13,42 @@ def create_substitution(variable_substitutions):
 
     client = pgt.RabbitClient(config.get('RABBIT', 'HOST', vars=os.environ), 5672, 'flopsy', 'password', 'pgt')
 
-    templates, filename, author, time, sha, previous_sha = variable_substitutions.values()
-
-    for template in templates:
+    for template in variable_values["templates"]:
 
         # set up document
         with open("templates/" + template + ".json") as fh:
             t = fh.read()
         client.new_template(template, t)
 
-        client.new('covid', 'http://covid.kcl.ac.uk')
-        client.namespace('covid', 'pandas', 'http://covid.kcl.ac.uk/pandas')
-        client.register_template('covid', template)
+        client.new(name, 'http://' + name + '.kcl.ac.uk')
+        client.namespace(name, domain, 'http://' + name + '.kcl.ac.uk/' + domain)
+        client.register_template(name, template)
 
         # instantiate non-variable information
         s = pgt.Substitution()
 
-        nb_id1 = filename + "_" + previous_sha
-
-        s.add_ivar('notebookBefore', pgt.QualifiedName('', nb_id1))
-
-        nb_id2 = filename + '_' + sha
-        s.add_ivar('notebookAfter', pgt.QualifiedName('', nb_id2))
-        s.add_vvar('filename', filename)
-        s.add_vvar('commit', sha)
-
-        s.add_vvar('time', datetime.fromisoformat(time))
-
-        s.add_ivar('author', pgt.QualifiedName('', author))
-
-        a_id = filename + '_' + str(uuid.uuid1())
-        s.add_ivar('imported', pgt.QualifiedName('', a_id))
-
-        # instantiate first new variable action
-        for substitution_variable in templates[template][0]:
+        for substitution_variable in fixed_values[template]:
+            if substitution_variable["zone"]:
+                # To add fixed zone information add to existing zone information derived from regex.
+                [substitution.append(substitution_variable) for substitution in variable_values["templates"][template]];
+                continue;
             s.add_ivar(substitution_variable['name'], pgt.QualifiedName('', substitution_variable['value'])) if substitution_variable['ivar'] else s.add_vvar(substitution_variable['name'], substitution_variable['value']);
 
-        f_id = filename + '_' + sha
-        client.geninit('covid', template, f_id, s.to_json())
+        # instantiate first new variable action
+        for substitution_variable in variable_values["templates"][template][0]:
+            s.add_ivar(substitution_variable['name'], pgt.QualifiedName('', substitution_variable['value'])) if substitution_variable['ivar'] else s.add_vvar(substitution_variable['name'], substitution_variable['value']);
 
-        # instantiate remaining new imports
-        for substitution in templates[template][1:]:
+        f_id = str(uuid.uuid1());
+        client.geninit(name, template, f_id, s.to_json())
+
+        # instantiate remaining new substitutions as zones
+        for substitution in  variable_values["templates"][template][1:]:
             
             z = pgt.Substitution()
-
-            a_id = filename + '_' + str(uuid.uuid1())
-            z.add_ivar('imported', pgt.QualifiedName('', a_id))
-            z.add_vvar('time', datetime.fromisoformat(time))
 
             for substitution_variable in substitution:
                 z.add_ivar(substitution_variable['name'], pgt.QualifiedName('', substitution_variable['value'])) if substitution_variable['ivar'] else z.add_vvar(substitution_variable['name'], substitution_variable['value']);
 
-            client.genzone('covid', template, f_id, 'import', z.to_json())
+            client.genzone(name, template, f_id, 'import', z.to_json())
 
-        client.genfinal('covid', template, f_id)
+        client.genfinal(name, template, f_id)
