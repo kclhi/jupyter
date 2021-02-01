@@ -2,13 +2,23 @@ from pony import orm
 
 db = orm.Database();
 
-class Mapping(db.Entity):
-    var = orm.Required(str);
-    regex = orm.Required(str);
+class Template(db.Entity):
+    name = orm.Required(str);
+    path = orm.Required(str);
+    template_variable = orm.Set("TemplateVariable");
+
+class TemplateVariable(db.Entity):
+    name = orm.Required(str);
     ivar = orm.Required(bool);
+    template = orm.Required("Template");
+    expression = orm.Set("Expression");
+
+class Expression(db.Entity):
+    regex = orm.Required(str);
+    template_variable = orm.Set("TemplateVariable");    
     match_action = orm.Optional("MatchAction");
 
 class MatchAction(db.Entity):
     action = orm.Required(str);
     value = orm.Required(str);
-    mapping = orm.Required("Mapping");
+    mapping = orm.Required("Expression");

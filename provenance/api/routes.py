@@ -4,7 +4,7 @@ from starlette.responses import JSONResponse
 from unidiff import PatchSet
 from datetime import datetime
 from pony import orm
-from api import actions
+from api import variables
 from api import provify
 from api.models.base import db
 
@@ -56,12 +56,12 @@ async def add(request):
         db.bind(provider='sqlite', filename='mappings.sqlite');
         db.generate_mapping();
         with orm.db_session:
-            acted = actions.get_actions(repo, db.Mapping.select());
+            variable_substitutions = variables.get_variable_substitutions(repo, db.Expression.select());
 
-        print(acted);
+        print(variable_substitutions);
         
-        if len(acted):
+        if len(variable_substitutions):
             if commit(repository, user + "/" + filename):
-                provify.provify_imports([{**actions, **{"filename": filename, "author":user, "time":str(datetime.fromtimestamp(repository.commit("HEAD").committed_date)), "sha":repository.commit("HEAD").hexsha, "previous_sha":(repository.commit("HEAD~1").hexsha if len(list(repository.iter_commits("HEAD"))) > 1 else "0000")}} for actions in acted], "templates/imported.json");
+                provify.create_substitution({**variable_substitutions, **{"filename": filename, "author":user, "time":str(datetime.fromtimestamp(repository.commit("HEAD").committed_date)), "sha":repository.commit("HEAD").hexsha, "previous_sha":(repository.commit("HEAD~1").hexsha if len(list(repository.iter_commits("HEAD"))) > 1 else "0000")}});
                     
     return JSONResponse({});
