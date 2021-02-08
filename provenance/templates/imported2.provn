@@ -1,6 +1,6 @@
 document
 
-    default <https://kclhi.org/provenance>
+    default <https://kclhi.org/provenance/>
     prefix var <https://kclhi.org/provenance/pgt/var/>
     prefix vvar <https://kclhi.org/provenance/pgt/vvar/>
     prefix zone <https://kclhi.org/provenance/pgt/zone/>
