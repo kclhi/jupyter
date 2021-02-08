@@ -1,0 +1,23 @@
+document
+
+    default <https://kclhi.org/provenance/>
+    prefix var <https://kclhi.org/provenance/pgt/var/>
+    prefix vvar <https://kclhi.org/provenance/pgt/vvar/>
+    prefix datasci <https://kclhi.org/datasci/>
+
+    agent(var:author, [prov:type="datasci#Author",
+            datasci:author='vvar:authorName'])
+    activity(var:saved, [prov:type="datasci#Saved"])
+    entity(var:notebook, [prov:type="datasci#Notebook",
+            datasci:filename='vvar:filename'])
+    entity(var:library, [prov:type="datasci#Library",
+            datasci:libraryName="pandas",
+            datasci:language="python"])
+    activity(var:imported, [prov:type="datasci#Imported"])
+
+    wasAssociatedWith(var:saved, var:author, -)
+    wasGeneratedBy(var:notebook, var:saved, -)
+    wasGeneratedBy(var:notebook, var:imported, -)
+    used(var:imported, var:library, -)
+
+endDocument
