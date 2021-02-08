@@ -1,0 +1,20 @@
+document
+
+    default <https://kclhi.org/provenance>
+    prefix var <https://kclhi.org/provenance/pgt/var/>
+    prefix vvar <https://kclhi.org/provenance/pgt/vvar/>
+    prefix zone <https://kclhi.org/provenance/pgt/zone/>
+    prefix datasci <https://kclhi.org/datasci/>
+
+    entity(var:notebook, [prov:type="datasci#Notebook"])
+    entity(var:library, [prov:type="datasci#Library",
+            datasci:libraryName='vvar:libraryName',
+            datasci:language='vvar:language',
+            zone:id='import', zone:type="parallel"])
+    activity(var:imported, [prov:type="datasci#Imported",
+            zone:id='import', zone:type="parallel"])
+
+    used(var:imported, var:library, -)
+    wasGeneratedBy(var:notebook, var:imported, -)
+
+endDocument

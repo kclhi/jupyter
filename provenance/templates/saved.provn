@@ -1,0 +1,20 @@
+document
+
+    default <https://kclhi.org/provenance/>
+    prefix var <https://kclhi.org/provenance/pgt/var/>
+    prefix vvar <https://kclhi.org/provenance/pgt/vvar/>
+    prefix datasci <https://kclhi.org/datasci/>
+
+    entity(var:notebookBefore, [prov:type="datasci#Notebook",
+            datasci:filename='vvar:filename'])
+    entity(var:notebookAfter, [prov:type="datasci#Notebook"])
+    entity(var:commit, [prov:type="datasci#Commit", datasci:sha='vvar:sha'])
+    activity(var:saved, [prov:type="datasci#Saved", prov:end='vvar:time'])
+    agent(var:author, [prov:type="datasci#Author"])
+
+    used(var:saved, var:notebookBefore, -)
+    wasAssociatedWith(var:saved, var:author, -)
+    wasGeneratedBy(var:notebookAfter, var:saved, -)
+    wasGeneratedBy(var:commit, var:saved, -)
+
+endDocument

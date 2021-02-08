@@ -1,0 +1,20 @@
+document
+
+    default <https://kclhi.org/provenance/>
+    prefix var <https://kclhi.org/provenance/pgt/var/>
+    prefix vvar <https://kclhi.org/provenance/pgt/vvar/>
+    prefix zone <https://kclhi.org/provenance/pgt/zone/>
+    prefix datasci <https://kclhi.org/datasci/>
+
+    entity(var:notebook, [prov:type="datasci#Notebook"])
+    entity(var:call, [prov:type="datasci#StaticCall",
+            datasci:module='vvar:module',
+            datasci:function='vvar:function',
+            zone:id='call', zone:type="parallel"])
+    activity(var:called, [prov:type="datasci#Called",
+            zone:id='call', zone:type="parallel"])
+
+    used(var:called, var:call, -)
+    wasGeneratedBy(var:notebook, var:called, -)
+
+endDocument
