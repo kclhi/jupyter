@@ -5,9 +5,9 @@ document
     prefix vvar <https://kclhi.org/provenance/pgt/vvar/>
     prefix datasci <https://kclhi.org/datasci/>
 
-    entity(var:notebookBefore, [prov:type="datasci#Notebook",
+    entity(var:notebookBefore, [prov:type="datasci#Notebook"])
+    entity(var:notebookAfter, [prov:type="datasci#Notebook",
             datasci:filename='vvar:filename'])
-    entity(var:notebookAfter, [prov:type="datasci#Notebook"])
     entity(var:commit, [prov:type="datasci#Commit", datasci:sha='vvar:sha'])
     activity(var:saved, [prov:type="datasci#Saved", prov:end='vvar:time'])
     agent(var:author, [prov:type="datasci#Author"])
