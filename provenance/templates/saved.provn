@@ -10,7 +10,8 @@ document
             datasci:filename='vvar:filename'])
     entity(var:commit, [prov:type="datasci#Commit", datasci:sha='vvar:sha'])
     activity(var:saved, [prov:type="datasci#Saved", prov:end='vvar:time'])
-    agent(var:author, [prov:type="datasci#Author"])
+    agent(var:author, [prov:type="datasci#Author",
+            datasci:author='vvar:authorName'])
 
     used(var:saved, var:notebookBefore, -)
     wasAssociatedWith(var:saved, var:author, -)
