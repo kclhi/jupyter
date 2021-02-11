@@ -7,8 +7,8 @@ document
     prefix datasci <https://kclhi.org/datasci/>
 
     entity(var:notebook, [prov:type="datasci#Notebook"])
-    entity(var:call, [prov:type="datasci#StaticCall",
-            datasci:module='vvar:module',
+    entity(var:call, [prov:type="datasci#FunctionCall",
+            datasci:object='vvar:object',
             datasci:function='vvar:function',
             zone:id='call', zone:type="parallel"])
     activity(var:called, [prov:type="datasci#Called",
