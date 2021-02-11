@@ -4,7 +4,7 @@ from unidiff import PatchSet
 def net_insertion(insert, lines):
 
     for line in lines:
-        if line[0].lower()=="-" and line[1:].lower()==insert[1:].lower(): return 0;
+        if len(line) > 0 and line[0].lower()=="-" and line[1:].lower()==insert[1:].lower(): return 0;
 
     return 1;
     
@@ -24,8 +24,8 @@ def extract_variable_values(repo, expressions):
         
         # Combine hunks by splitting file
         for patched_line in str(patched_file).split("\n"):
-
-            if patched_line.lower()[0]=="+":
+            
+            if len(patched_line) > 1 and patched_line.lower()[0]=="+" and patched_line.lower()[1]!="+":
                 
                 if net_insertion(patched_line, str(patched_file).split("\n"))<1: continue;
 
@@ -44,7 +44,6 @@ def extract_variable_values(repo, expressions):
                             substitution_variable={};
                             substitution_variable["name"]=variable.name;
                             substitution_variable["value"]=value;
-                            substitution_variable["ivar"]=variable.ivar;
                             template_name = variable.template.name;
                             # A list of substitutions is maintained for each template. If len > 1 zones assumed.
                             last_substitution = template_substitutions.get(template_name,[[]])[-1];

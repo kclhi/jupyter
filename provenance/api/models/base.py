@@ -9,7 +9,6 @@ class Template(db.Entity):
 
 class TemplateVariable(db.Entity):
     name = orm.Required(str);
-    ivar = orm.Required(bool);
     template = orm.Required("Template");
     expression = orm.Set("Expression");
 

@@ -53,8 +53,6 @@ async def add(request):
         f.write(notebook["code"]);
         f.close();
 
-        db.bind(provider='sqlite', filename='mappings.sqlite');
-        db.generate_mapping();
         with orm.db_session:
             variable_values = variables.extract_variable_values(repo, db.Expression.select());
        
@@ -64,18 +62,28 @@ async def add(request):
                 previous_sha = repository.commit("HEAD~1").hexsha if len(list(repository.iter_commits("HEAD"))) > 1 else "0000";
                 sha = repository.commit("HEAD").hexsha;
 
-                print(repository.commit("HEAD").committed_date);
-                
-                # Fixed values to be applied to each substitution for a given template.
-                fixed_values = {"import": [
-                    {"name": "notebookBefore", "value": filename + "_" + previous_sha, "ivar": True, "zone": False},
-                    {"name": "notebookAfter", "value": filename + '_' + sha, "ivar": True, "zone": False},
-                    {"name": "filename", "value": filename, "ivar": False, "zone": False},
-                    {"name": "commit", "value": sha, "ivar": False, "zone": False}, 
-                    {"name": "author", "value": user, "ivar": True, "zone": False},
-                    {"name": "imported", "value": filename + '_' + str(uuid.uuid1()), "ivar": True, "zone": True},
-                    {"name": "time", "value": str(datetime.fromisoformat(str(datetime.fromtimestamp(repository.commit("HEAD").committed_date)))), "ivar": False, "zone": True},
-                ]};
+                # Fixed values to be applied to each substitution for a given template (may be the whole template).
+                fixed_values = {"templates": {
+                    "saved": [
+                        {"name": "notebookBefore", "value": filename + "_" + previous_sha},
+                        {"name": "notebookAfter", "value": filename + '_' + sha},
+                        {"name": "filename", "value": filename},
+                        {"name": "commit", "value": sha},
+                        {"name": "sha", "value": sha},
+                        {"name": "author", "value": user},
+                        {"name": "authorName", "value": user},
+                        {"name": "saved", "value": filename + '_' + str(uuid.uuid1())},
+                        {"name": "time", "value": str(datetime.fromisoformat(str(datetime.fromtimestamp(repository.commit("HEAD").committed_date))))},
+                    ], 
+                    "imported2": [
+                        {"name": "notebook", "value": filename + '_' + sha},
+                        {"name": "imported", "value": filename + '_' + str(uuid.uuid1())},
+                    ],
+                    "called": [
+                        {"name": "notebook", "value": filename + '_' + sha},
+                        {"name": "called", "value": filename + '_' + str(uuid.uuid1())},
+                    ]
+                }};
 
                 provify.create_substitutions("covid", "pandas", fixed_values, variable_values);
                     
