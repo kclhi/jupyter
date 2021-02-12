@@ -5,9 +5,10 @@ from unidiff import PatchSet
 from datetime import datetime
 from pony import orm
 from api import variables
-from api import provify
+from api.provify import Provify
 from api.models.base import db
 
+provify = Provify();
 app = Starlette(debug=True)
 
 def commit(repo, add, branch='master', message='Auto commit'):
