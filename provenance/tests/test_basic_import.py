@@ -1,8 +1,9 @@
-import unittest, os, git, random, string
+import unittest, git, random, string
 from pony import orm
 from api.models.base import db
 from starlette.testclient import TestClient
 from api import routes
+from tests.fixtures import db_fixtures
 
 class BasicTestImport(unittest.TestCase):
 
@@ -12,24 +13,11 @@ class BasicTestImport(unittest.TestCase):
         db.generate_mapping(create_tables=True);
         db.drop_all_tables(with_all_data=True);
         db.create_tables();
-        with orm.db_session:
-            t = db.Template(name="imported2", path="templates/imported2.json");
-            tv1 = db.TemplateVariable(name="language", template=t);
-            e1 = db.Expression(regex="(from\s+(\S)+\s+)?import\s+([^\s#\\\,]+)\s?", template_variable=tv1);
-            e2 = db.Expression(regex="library\(('|\\\"\"|\\\\\")?([^\s,'\"\\\\)]+)", template_variable=tv1);
-            ma1 = db.MatchAction(action="text", value="Python", mapping=e1);
-            ma2 = db.MatchAction(action="text", value="R", mapping=e2);
-            tv2 = db.TemplateVariable(name="library", template=t);
-            tv3 = db.TemplateVariable(name="libraryName", template=t);
-            e3 = db.Expression(regex="(from\s+(\S)+\s+)?import\s+([^\s#\\\,]+)\s?", template_variable=(tv2, tv3));
-            e4 = db.Expression(regex="library\(('|\\\"\"|\\\\\")?([^\s,'\"\\\\)]+)", template_variable=(tv2, tv3));
-            ma3 = db.MatchAction(action="extract", value="3", mapping=e3);
-            ma4 = db.MatchAction(action="extract", value="2", mapping=e4);
-            orm.commit();
+        db_fixtures.db_imported();
         
     def test_db(self):
         with orm.db_session:
-            assert [sorted([tv.name for tv in row.template_variable]) for row in db.Expression.select()] == [['language'], ['language'], ['libraryName', 'library'], ['libraryName', 'library']];
+            assert [sorted([tv.name for tv in row.template_variable]) for row in db.Expression.select()] == [['language'], ['language'], ['library', 'libraryName'], ['library', 'libraryName']];
             
     def test_add_imports(self):
         client = TestClient(routes.app);

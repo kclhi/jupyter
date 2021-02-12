@@ -1,7 +1,6 @@
 import git, os, json, uuid
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
-from unidiff import PatchSet
 from datetime import datetime
 from pony import orm
 from api import variables

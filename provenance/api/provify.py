@@ -1,5 +1,4 @@
 import configparser, os, uuid, json
-from datetime import datetime
 import pgt 
 
 class Provify:
@@ -102,13 +101,10 @@ class Provify:
                 return self.vvar_ivar_cache(template)[variable] in zones.keys();
 
     def create_substitutions(self, name, domain, fixed_values, variable_values):
-
         config = configparser.ConfigParser();
 
-        if 'PY_ENV' in os.environ and os.environ['PY_ENV']=="production":
-            config.read('config/config.prod.ini');
-        else:
-            config.read('config/config.dev.ini');
+        if 'PY_ENV' in os.environ and os.environ['PY_ENV']=="production": config.read('config/config.prod.ini');
+        else: config.read('config/config.dev.ini');
 
         client = pgt.RabbitClient(config.get('RABBIT', 'HOST', vars=os.environ), 5672, 'flopsy', 'password', 'pgt')
 

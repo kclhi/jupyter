@@ -1,8 +1,9 @@
-import unittest, os, git, random, string
+import unittest, git, random, string
 from pony import orm
 from starlette.testclient import TestClient
 from api import routes
 from api.models.base import db
+from tests.fixtures import db_fixtures
 
 class BasicTestCall(unittest.TestCase):
 
@@ -12,16 +13,7 @@ class BasicTestCall(unittest.TestCase):
         db.generate_mapping(create_tables=True);
         db.drop_all_tables(with_all_data=True);
         db.create_tables();
-        with orm.db_session:
-            t = db.Template(name="called", path="templates/called.json");
-            tv1 = db.TemplateVariable(name="call",template=t);
-            tv2 = db.TemplateVariable(name="function", template=t);
-            tv3 = db.TemplateVariable(name="object", template=t);
-            e1 = db.Expression(regex="([^\.]+)\.([^\)]+)\([^\)]*\)", template_variable=(tv1, tv2));
-            e2 = db.Expression(regex="([^\.]+)\.([^\)]+)\([^\)]*\)", template_variable=tv3);
-            ma1 = db.MatchAction(action="extract", value="2", mapping=e1);
-            ma2 = db.MatchAction(action="extract", value="1", mapping=e2);
-            orm.commit();
+        db_fixtures.db_called();
 
     def test_called(self):
         with orm.db_session:

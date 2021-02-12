@@ -1,4 +1,4 @@
-import git, re, csv
+import git, re
 from unidiff import PatchSet
 
 def net_insertion(insert, lines):
