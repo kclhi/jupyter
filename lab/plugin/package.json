@@ -15,13 +15,13 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^2.1.2",
-    "@jupyterlab/notebook": "^2.1.2",
-    "ky": "^0.20.0"
+    "@jupyterlab/application": "^3.0.9",
+    "@jupyterlab/notebook": "^3.0.9",
+    "ky": "^0.27.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
-    "typescript": "^3.9.5"
+    "typescript": "^4.2.4"
   },
   "jupyterlab": {
     "extension": true
