@@ -2,6 +2,8 @@
 
 # Docker configuration :whale2:
 
+With added provenance capabilities.
+
 Tailored for COVID-19 dataset analysis ([view packages](lab/Dockerfile)).
 
 ## Prerequisites
