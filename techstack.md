@@ -7,6 +7,7 @@ kclhi/jupyter is built on the following main stack:
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - [Python](https://www.python.org) – Languages
 - [TypeScript](http://www.typescriptlang.org) – Languages
+- [.NET](http://www.microsoft.com/net/) – Frameworks (Full Stack)
 - [MySQL](http://www.mysql.com) – Databases
 - [Neo4j](http://www.neo4j.com/) – Graph Databases
 - [RabbitMQ](http://www.rabbitmq.com/) – Message Queue
@@ -27,6 +28,7 @@ kclhi/jupyter is built on the following main stack:
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/993/pUBY5pVj.png' alt='Python'/> [Python](https://www.python.org) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1612/bynNY5dJ.jpg' alt='TypeScript'/> [TypeScript](http://www.typescriptlang.org) – Languages
+- <img width='25' height='25' src='https://img.stackshare.io/service/1014/IoPy1dce_400x400.png' alt='.NET'/> [.NET](http://www.microsoft.com/net/) – Frameworks (Full Stack)
 - <img width='25' height='25' src='https://img.stackshare.io/service/1025/logo-mysql-170x170.png' alt='MySQL'/> [MySQL](http://www.mysql.com) – Databases
 - <img width='25' height='25' src='https://img.stackshare.io/service/1482/FbkjM42a.png' alt='Neo4j'/> [Neo4j](http://www.neo4j.com/) – Graph Databases
 - <img width='25' height='25' src='https://img.stackshare.io/service/1061/default_df93e9a30d27519161b39d8c1d5c223c1642d187.jpg' alt='RabbitMQ'/> [RabbitMQ](http://www.rabbitmq.com/) – Message Queue
@@ -44,7 +46,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [kclhi/jupyter](https://github.com/kclhi/jupyter)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|34<br/>Tools used|02/11/24 <br/>Report generated|
+|36<br/>Tools used|06/09/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -85,6 +87,19 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
+## <img src='https://img.stackshare.io/frameworks.svg'/> Frameworks (1)
+<table><tr>
+  <td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/1014/IoPy1dce_400x400.png' alt='.NET'>
+  <br>
+  <sub><a href="http://www.microsoft.com/net/">.NET</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+</tr>
+</table>
+
 ## <img src='https://img.stackshare.io/databases.svg'/> Data (3)
 <table><tr>
   <td align='center'>
@@ -114,7 +129,7 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## <img src='https://img.stackshare.io/devops.svg'/> DevOps (6)
+## <img src='https://img.stackshare.io/devops.svg'/> DevOps (7)
 <table><tr>
   <td align='center'>
   <img width='36' height='36' src='https://img.stackshare.io/service/586/n4u37v9t_400x400.png' alt='Docker'>
@@ -144,6 +159,14 @@ Full tech stack [here](/techstack.md)
   <img width='36' height='36' src='https://img.stackshare.io/service/1052/YMxUfyWf.png' alt='NGINX'>
   <br>
   <sub><a href="http://nginx.org">NGINX</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+<td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/2637/6I3oEOP4_400x400.jpg' alt='NuGet'>
+  <br>
+  <sub><a href="https://www.nuget.org/">NuGet</a></sub>
   <br>
   <sub></sub>
 </td>
@@ -197,21 +220,21 @@ Full tech stack [here](/techstack.md)
 |:------|:------|:------|:------|:------|:------|
 |[GitPython](https://pypi.org/project/GitPython)|v3.1.3|06/12/20|Martin Chapman |BSD-3-Clause|[CVE-2023-40267](https://github.com/advisories/GHSA-pr76-5cm5-w9cj) (Critical)<br/>[CVE-2024-22190](https://github.com/advisories/GHSA-2mqj-m65w-jghx) (High)<br/>[CVE-2022-24439](https://github.com/advisories/GHSA-hcpj-qp55-gfph) (High)<br/>[CVE-2023-41040](https://github.com/advisories/GHSA-cwvm-v4w8-q58c) (Moderate)|
 |[certifi](https://pypi.org/project/certifi)|v2020.4.5|06/11/20|Martin Chapman |MPL-2.0|[CVE-2023-37920](https://github.com/advisories/GHSA-xqr8-7jwr-rhp7) (High)<br/>[CVE-2022-23491](https://github.com/advisories/GHSA-43fp-rhv2-5gv8) (Moderate)|
+|[starlette](https://pypi.org/project/starlette)|v0.13.4|06/11/20|Martin Chapman |BSD-3-Clause|[CVE-2024-24762](https://github.com/advisories/GHSA-2jv5-9r88-3w3p) (High)<br/>[](https://github.com/advisories/GHSA-93gm-qmq6-w238) (High)<br/>[CVE-2023-30798](https://github.com/advisories/GHSA-3qj8-93xh-pwh2) (High)<br/>[](https://github.com/advisories/GHSA-74m5-2c7w-9w3x) (Moderate)|
+|[urllib3](https://pypi.org/project/urllib3)|v1.25.9|06/11/20|Martin Chapman |MIT|[CVE-2021-33503](https://github.com/advisories/GHSA-q2q7-5pp4-w6pg) (High)<br/>[CVE-2023-45803](https://github.com/advisories/GHSA-g4mx-q9vg-27p4) (Moderate)<br/>[CVE-2023-43804](https://github.com/advisories/GHSA-v845-jxx5-vc9f) (Moderate)|
+|[idna](https://pypi.org/project/idna)|v2.9|06/11/20|Martin Chapman |BSD-3-Clause|[CVE-2024-3651](https://github.com/advisories/GHSA-jjg7-2v4v-x38h) (Moderate)|
+|[requests](https://pypi.org/project/requests)|v2.23.0|06/11/20|Martin Chapman |Apache-2.0|[CVE-2024-35195](https://github.com/advisories/GHSA-9wx4-h78v-vm56) (Moderate)<br/>[CVE-2023-32681](https://github.com/advisories/GHSA-j8r2-6x86-q33q) (Moderate)|
+|[websockets](https://pypi.org/project/websockets)|v8.1|06/11/20|Martin Chapman |BSD-3-Clause|[CVE-2021-33880](https://github.com/advisories/GHSA-8ch4-58qp-g3mp) (Moderate)|
 |[chardet](https://pypi.org/project/chardet)|v3.0.4|06/11/20|Martin Chapman |LGPL-2.1|N/A|
 |[click](https://pypi.org/project/click)|v7.1.2|06/11/20|Martin Chapman |BSD-3-Clause|N/A|
 |[gitdb](https://pypi.org/project/gitdb)|v4.0.5|06/12/20|Martin Chapman |BSD-3-Clause|N/A|
 |[h11](https://pypi.org/project/h11)|v0.9.0|06/11/20|Martin Chapman |MIT|N/A|
 |[httptools](https://pypi.org/project/httptools)|v0.1.1|06/11/20|Martin Chapman |MIT|N/A|
-|[idna](https://pypi.org/project/idna)|v2.9|06/11/20|Martin Chapman |BSD-3-Clause|N/A|
 |[pika](https://pypi.org/project/pika)|v1.1.0|06/12/20|Martin Chapman |BSD-3-Clause|N/A|
 |[pony](https://pypi.org/project/pony)|v0.7.14|01/28/21|Martin Chapman |Apache-2.0|N/A|
 |[python-dotenv](https://pypi.org/project/python-dotenv)|v0.13.0|06/12/20|Martin Chapman |BSD-3-Clause|N/A|
-|[requests](https://pypi.org/project/requests)|v2.23.0|06/11/20|Martin Chapman |Apache-2.0|[CVE-2023-32681](https://github.com/advisories/GHSA-j8r2-6x86-q33q) (Moderate)|
-|[starlette](https://pypi.org/project/starlette)|v0.13.4|06/11/20|Martin Chapman |BSD-3-Clause|[](https://github.com/advisories/GHSA-93gm-qmq6-w238) (High)<br/>[CVE-2023-30798](https://github.com/advisories/GHSA-3qj8-93xh-pwh2) (High)<br/>[](https://github.com/advisories/GHSA-74m5-2c7w-9w3x) (Moderate)|
-|[urllib3](https://pypi.org/project/urllib3)|v1.25.9|06/11/20|Martin Chapman |MIT|[CVE-2021-33503](https://github.com/advisories/GHSA-q2q7-5pp4-w6pg) (High)<br/>[CVE-2023-45803](https://github.com/advisories/GHSA-g4mx-q9vg-27p4) (Moderate)<br/>[CVE-2023-43804](https://github.com/advisories/GHSA-v845-jxx5-vc9f) (Moderate)|
 |[uvicorn](https://pypi.org/project/uvicorn)|v0.11.7|04/23/21|Martin Chapman |BSD-3-Clause|N/A|
 |[uvloop](https://pypi.org/project/uvloop)|v0.14.0|06/11/20|Martin Chapman |Apache-2.0|N/A|
-|[websockets](https://pypi.org/project/websockets)|v8.1|06/11/20|Martin Chapman |BSD-3-Clause|[CVE-2021-33880](https://github.com/advisories/GHSA-8ch4-58qp-g3mp) (Moderate)|
 
 
 ## <img width='24' height='24' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png'/> npm (2)
